@@ -1,0 +1,62 @@
+[gd_scene load_steps=12 format=3 uid="uid://d02ehp88dkxln"]
+
+[ext_resource type="Script" uid="uid://da67nnhex2vq4" path="res://src/scripts/card.gd" id="1_447hh"]
+[ext_resource type="Texture2D" uid="uid://b4ohipbmwbvdh" path="res://src/assets/images/card_back.png" id="2_447hh"]
+[ext_resource type="Texture2D" uid="uid://clfq34i8q7lyq" path="res://src/assets/images/cards/symbols/card_number_zero.png" id="2_u3k6h"]
+[ext_resource type="Texture2D" uid="uid://b7s1uvbo2etq" path="res://src/assets/images/cards/wild/card_wild.png" id="3_u3k6h"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_447hh"]
+transparency = 2
+alpha_scissor_threshold = 0.5
+alpha_antialiasing_mode = 0
+albedo_texture = ExtResource("2_u3k6h")
+texture_filter = 0
+
+[sub_resource type="QuadMesh" id="QuadMesh_g4adc"]
+lightmap_size_hint = Vector2i(5, 6)
+material = SubResource("StandardMaterial3D_447hh")
+size = Vector2(0.71, 0.95)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_c8f4w"]
+transparency = 2
+alpha_scissor_threshold = 0.5
+alpha_antialiasing_mode = 0
+albedo_texture = ExtResource("3_u3k6h")
+texture_filter = 0
+
+[sub_resource type="QuadMesh" id="QuadMesh_iqn5l"]
+material = SubResource("StandardMaterial3D_c8f4w")
+size = Vector2(0.71, 0.95)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_g4adc"]
+transparency = 2
+alpha_scissor_threshold = 0.5
+alpha_antialiasing_mode = 0
+albedo_texture = ExtResource("2_447hh")
+texture_filter = 0
+
+[sub_resource type="QuadMesh" id="QuadMesh_u3k6h"]
+material = SubResource("StandardMaterial3D_g4adc")
+size = Vector2(0.71, 0.95)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_u3k6h"]
+size = Vector3(0.71, 0.95, 0.1)
+
+[node name="Card" type="Node3D"]
+script = ExtResource("1_447hh")
+
+[node name="SymbolPlane" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.005)
+mesh = SubResource("QuadMesh_g4adc")
+
+[node name="ColorPlane" type="MeshInstance3D" parent="."]
+mesh = SubResource("QuadMesh_iqn5l")
+
+[node name="BackPlane" type="MeshInstance3D" parent="."]
+transform = Transform3D(-1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, 0, 0, -0.01)
+mesh = SubResource("QuadMesh_u3k6h")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = SubResource("BoxShape3D_u3k6h")

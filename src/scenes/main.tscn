@@ -1,0 +1,109 @@
+[gd_scene load_steps=15 format=3 uid="uid://ulvxcqdy16jh"]
+
+[ext_resource type="Script" uid="uid://clpyi7wdo5jlh" path="res://src/scripts/GameManager.gd" id="2_5dlwx"]
+[ext_resource type="PackedScene" uid="uid://w4hgb4fk7auv" path="res://src/assets/models/card_pile/card_pile.glb" id="3_32aa5"]
+[ext_resource type="Texture2D" uid="uid://brrcfvyg8y7rv" path="res://src/assets/dev/texture_01.png" id="4_5dlwx"]
+
+[sub_resource type="Environment" id="Environment_5dlwx"]
+background_mode = 1
+background_color = Color(0.297706, 0.297707, 0.297706, 1)
+tonemap_mode = 3
+ssao_enabled = true
+ssil_enabled = true
+glow_enabled = true
+fog_enabled = true
+fog_density = 0.011
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_32aa5"]
+albedo_texture = ExtResource("4_5dlwx")
+uv1_triplanar = true
+
+[sub_resource type="SphereMesh" id="SphereMesh_rr2wm"]
+material = SubResource("StandardMaterial3D_32aa5")
+radius = 10.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_o81g6"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_dbro3"]
+material = SubResource("StandardMaterial3D_o81g6")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2lg1k"]
+albedo_color = Color(1, 0.933333, 0, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_5lsyw"]
+material = SubResource("StandardMaterial3D_2lg1k")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kokaf"]
+albedo_color = Color(0, 0.116667, 1, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_lp058"]
+material = SubResource("StandardMaterial3D_kokaf")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_24j03"]
+albedo_color = Color(0, 1, 0.0833333, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_p1ia5"]
+material = SubResource("StandardMaterial3D_24j03")
+
+[node name="Main" type="Node3D"]
+
+[node name="GameManager" type="Node" parent="."]
+script = ExtResource("2_5dlwx")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.990402, -0.00612396, 0.138078, 0.132844, 0.23358, 0.96322, -0.038151, 0.972318, -0.230525, -0.423689, 1.45744, 0.733844)
+light_energy = 0.5
+shadow_enabled = true
+shadow_blur = 0.0
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_5dlwx")
+
+[node name="PlayerSpawnPoints" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
+
+[node name="Spawn1" type="Marker3D" parent="PlayerSpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5)
+
+[node name="Spawn2" type="Marker3D" parent="PlayerSpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 0)
+
+[node name="Spawn3" type="Marker3D" parent="PlayerSpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5)
+
+[node name="Spawn4" type="Marker3D" parent="PlayerSpawnPoints"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, 0)
+
+[node name="card_pile" parent="." instance=ExtResource("3_32aa5")]
+transform = Transform3D(0.614285, 0, -0.789084, 0, 1, 0, 0.789084, 0, 0.614285, -1.03764, -1.13283, -0.905523)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.48274, 0)
+mesh = SubResource("SphereMesh_rr2wm")
+
+[node name="Debugging" type="Node3D" parent="."]
+visible = false
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Debugging"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3)
+mesh = SubResource("CapsuleMesh_dbro3")
+skeleton = NodePath("../../MeshInstance3D")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="Debugging"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, 0)
+mesh = SubResource("CapsuleMesh_5lsyw")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="Debugging"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -3)
+mesh = SubResource("CapsuleMesh_lp058")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D5" type="MeshInstance3D" parent="Debugging"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 0)
+mesh = SubResource("CapsuleMesh_p1ia5")
+skeleton = NodePath("../..")
+
+[node name="TopCardHolder" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.960217, 0)

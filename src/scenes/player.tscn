@@ -1,0 +1,168 @@
+[gd_scene load_steps=17 format=3 uid="uid://bhlvxly4wurc4"]
+
+[ext_resource type="Shader" uid="uid://brypnhtvgbkqi" path="res://src/assets/shaders/vhs.gdshader" id="1_cusn3"]
+[ext_resource type="Script" uid="uid://tcsdvou85gr8" path="res://src/scripts/player.gd" id="1_hwyk6"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rr2wm"]
+shader = ExtResource("1_cusn3")
+shader_parameter/resolution = Vector2(640, 360)
+shader_parameter/scan_line_amount = 0.05
+shader_parameter/warp_amount = 0.05
+shader_parameter/noise_amount = 0.01
+shader_parameter/interference_amount = 0.015
+shader_parameter/grille_amount = 0.05
+shader_parameter/grille_size = 1.0
+shader_parameter/vignette_amount = 0.197
+shader_parameter/vignette_intensity = 0.4
+shader_parameter/aberation_amount = 0.05
+shader_parameter/roll_line_amount = 0.02
+shader_parameter/roll_speed = 1.0
+shader_parameter/scan_line_strength = -8.0
+shader_parameter/pixel_strength = -2.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v4rts"]
+albedo_color = Color(0.81, 0.6345, 0, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_v4rts"]
+material = SubResource("StandardMaterial3D_v4rts")
+radius = 0.75
+height = 1.5
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0qy4j"]
+emission_enabled = true
+emission = Color(1, 1, 1, 1)
+emission_energy_multiplier = 16.0
+
+[sub_resource type="TorusMesh" id="TorusMesh_8v6aa"]
+material = SubResource("StandardMaterial3D_0qy4j")
+outer_radius = 0.388
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hwyk6"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_l2v1k"]
+material = SubResource("StandardMaterial3D_hwyk6")
+radius = 0.3
+height = 0.6
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ya6j6"]
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_0qy4j"]
+material = SubResource("StandardMaterial3D_ya6j6")
+radius = 0.2
+height = 0.4
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_l2v1k"]
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_ya6j6"]
+material = SubResource("StandardMaterial3D_l2v1k")
+size = Vector2(0.1, 0.35)
+
+[sub_resource type="Animation" id="Animation_hwyk6"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Player:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, -1.39644, 0.276975)]
+}
+
+[sub_resource type="Animation" id="Animation_v4rts"]
+resource_name = "player"
+length = 2.5
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Player:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, -1.39644, 0.276975), Vector3(0, -1.77315, 0.276975)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_hwyk6"]
+_data = {
+&"RESET": SubResource("Animation_hwyk6"),
+&"player": SubResource("Animation_v4rts")
+}
+
+[node name="Player" type="Node3D"]
+script = ExtResource("1_hwyk6")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.939693, 0.34202, 0, -0.34202, 0.939693, 0, 0, 0)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="Camera3D"]
+
+[node name="Control" type="Control" parent="Camera3D/CanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="CRTShader" type="ColorRect" parent="Camera3D/CanvasLayer/Control"]
+material = SubResource("ShaderMaterial_rr2wm")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="Hand" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.878817, 0.477159, 0, -0.477159, 0.878817, -0.115, -1.5, -1.7)
+
+[node name="Player" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.39644, 0.276975)
+mesh = SubResource("SphereMesh_v4rts")
+
+[node name="MeshInstance3D7" type="MeshInstance3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.953576, 0.0108589)
+mesh = SubResource("TorusMesh_8v6aa")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.441514, -0.03, -0.46061)
+mesh = SubResource("SphereMesh_l2v1k")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.441515, -0.03, -0.46061)
+mesh = SubResource("SphereMesh_l2v1k")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.537947, -0.03, -0.590277)
+mesh = SubResource("SphereMesh_0qy4j")
+skeleton = NodePath("../MeshInstance3D3")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.524321, -0.03, -0.589326)
+mesh = SubResource("SphereMesh_0qy4j")
+
+[node name="MeshInstance3D5" type="MeshInstance3D" parent="Player"]
+transform = Transform3D(0.707107, -1.16776e-08, -0.707107, 0.606445, -0.514245, 0.606446, -0.363626, -0.857643, -0.363626, -0.108151, -0.365557, -0.66535)
+mesh = SubResource("PlaneMesh_ya6j6")
+
+[node name="MeshInstance3D6" type="MeshInstance3D" parent="Player"]
+transform = Transform3D(-0.707107, 9.75366e-08, -0.707107, 0.606445, -0.514245, -0.606445, -0.363626, -0.857643, 0.363626, 0.1, -0.365557, -0.66535)
+mesh = SubResource("PlaneMesh_ya6j6")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_hwyk6")
+}
+autoplay = "player"
