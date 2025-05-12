@@ -24,7 +24,7 @@ func _ready() -> void:
 		start_server()
 	else:
 		print("Iniciando en Modo Cliente")
-		connect_to_server("127.0.0.1")
+		connect_to_server("192.168.122.217")
 
 	if is_multiplayer_authority():
 		_generate_deck()
